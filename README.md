@@ -4,4 +4,5 @@ The Python scripts can also be run in a Jupyter notebook.
 
 ## Games
 - Backjack (Python) - Play Blackjack against an AI dealer.
-- Hangman (C) - Play Hangman from a list of words loaded from text file.
+- Hangman (C) - Play Hangman from a list of words loaded from a text file.
+- TicTacToe (Python) - A two player game of TicTacToe.
