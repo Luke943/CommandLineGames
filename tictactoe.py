@@ -3,8 +3,8 @@ Two player game of TicTacToe.
 Squares on the grid are numbered in the same way as the numberpad on keyboard.
 """
 
+import os
 import random
-from IPython.display import clear_output
 
 
 def main():
@@ -61,7 +61,7 @@ def main():
 
 
 def display_board(board):
-    clear_output()
+    os.system('cls' if os.name=='nt' else 'clear')
     print('   |   |   ')
     print(' ' + board[7] + ' | ' + board[8] + ' | ' + board[9] + ' ')
     print('---|---|---')

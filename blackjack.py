@@ -1,10 +1,9 @@
 """
 Game to play BlackJack against an AI dealer on the command line.
-N.B. The clear_output function will not affect the command line, but will when the script is run in Jupyter.
 """
 
+import os
 import random
-from IPython.display import clear_output
 
 # Variables used to create, display and assess deck of cards
 suits = ('Hearts', 'Diamonds', 'Spades', 'Clubs')
@@ -141,7 +140,7 @@ def main():
                 while extra_card:
                     player.take_cards(game_deck.deal_one())
                     show_board(player, dealer_seen,
-                               f"Stake = ${stake}", player.hand)
+                               f"Stake ${stake}", player.hand)
                     if player.score() > 21:
                         print("BUST")
                         break
@@ -152,7 +151,7 @@ def main():
                 if player.score() <= 21:
                     # dealer actions
                     show_board(player, dealer.hand,
-                               f"Stake = ${stake}", player.hand)
+                               f"Stake ${stake}", player.hand)
                     print(f"Dealer turns over {dealer.hand[1]}.")
                     print(f"Dealer's score is {dealer.score()}.")
                     while dealer.score() < 17:
@@ -160,7 +159,7 @@ def main():
                         input("Press enter to continue...")
                         dealer.take_cards(game_deck.deal_one())
                         show_board(player, dealer.hand,
-                                   f'Stake=${stake}', player.hand)
+                                   f'Stake ${stake}', player.hand)
                         print(f"Dealer's score is {dealer.score()}.")
                     if dealer.score() > 21:
                         print("BUST")
@@ -248,7 +247,7 @@ def show_hand(cards):
 
 
 def show_board(player, dealer_hand=[], message='', player_hand=[]):
-    clear_output()
+    os.system('cls' if os.name=='nt' else 'clear')
     print("-" * 50)
     print("Dealer's hand")
     show_hand(dealer_hand)
