@@ -6,7 +6,11 @@ import os
 import random
 
 # Variables used to create, display and assess deck of cards
-suits = ('Hearts', 'Diamonds', 'Spades', 'Clubs')
+suits = {'\u2660',  # Hearts
+         '\u2661',  # Spades
+         '\u2662',  # Clubs
+         '\u2663',  # Diamonds
+         }
 ranks = ('Two', 'Three', 'Four', 'Five', 'Six', 'Seven',
          'Eight', 'Nine', 'Ten', 'Jack', 'Queen', 'King', 'Ace')
 values = {'Two': 2, 'Three': 3, 'Four': 4, 'Five': 5, 'Six': 6, 'Seven': 7,
@@ -26,7 +30,7 @@ class Card():
         self.short_rank = short_ranks[rank]
 
     def __str__(self):
-        return self.short_rank + self.suit[0]
+        return self.short_rank + self.suit
 
 
 class Deck():
@@ -168,11 +172,11 @@ def main():
             if (dealer.score() < player.score() <= 21 or
                     player.score() <= 21 < dealer.score()):
                 if len(player.hand) == 2:
-                    print(f"You win ${stake*3/2}!")
-                    player.bankroll += stake*3/2
+                    print(f"You win ${stake * 3/2}!")
+                    player.bankroll += stake * 3/2
                 else:
-                    print(f"You win ${stake*2}!")
-                player.bankroll += stake*2
+                    print(f"You win ${stake * 2}!")
+                player.bankroll += stake * 2
             elif dealer.score() == player.score():
                 print(f"It's a tie. Take back your stake of ${stake}.")
                 player.bankroll += stake
@@ -211,7 +215,7 @@ def get_user_choice(question, option1='Y', option2='N'):
             print(f"Type '{option1}' or '{option2}'.")
 
 
-def num_input(question, cap=None):
+def num_input(question, cap=0):
     while True:
         answer = input(f"{question} ")
         try:
@@ -219,7 +223,7 @@ def num_input(question, cap=None):
         except:
             print("Enter a number in digits.")
             continue
-        if cap == None or cap >= answer:
+        if cap == 0 or cap >= answer:
             return answer
         else:
             print(f"Number cannot exceed {cap}. Try again.")
@@ -247,7 +251,7 @@ def show_hand(cards):
 
 
 def show_board(player, dealer_hand=[], message='', player_hand=[]):
-    os.system('cls' if os.name=='nt' else 'clear')
+    os.system('cls' if os.name == 'nt' else 'clear')
     print("-" * 50)
     print("Dealer's hand")
     show_hand(dealer_hand)
