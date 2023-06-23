@@ -6,3 +6,4 @@ A collection of short games made to run on the command line.
 - Hangman (C) - Play Hangman from a list of words loaded from a text file.
 - Tetris (C++) - A Tetris clone on the command line.
 - TicTacToe (Python) - A two player game of TicTacToe.
+- Rock, Paper, Scissors (JS) - Play rock, paper, scissors against the computer.

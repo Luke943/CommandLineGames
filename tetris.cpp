@@ -74,7 +74,7 @@ int main(void)
 
     // Game variables
     bool bGameOver = false;
-    int nCurrentPiece = 0;
+    int nCurrentPiece = rand() % 7;
     int nCurrentRotation = 0;
     int nCurrentX = nFieldWidth / 2;
     int nCurrentY = 0;
