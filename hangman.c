@@ -14,7 +14,7 @@
 int loadWords(const char *filename, char *words[MAX_COUNT]);
 void printOutcome(int quit, int lives, char *word);
 int playAgain(void);
-void freeWords(char *array[MAX_COUNT]);
+void freeWords(char *array[MAX_COUNT], int count);
 
 int main(void)
 {
@@ -27,7 +27,7 @@ int main(void)
         printf("Failed to load words from hangmanwords.txt\n");
         return -1;
     }
-    
+
     printf("Welcome to Hangman!\n");
     printf("Enter a letter to guess the word, or type 'quit' to quit.\n");
     int quit = 0;
@@ -86,7 +86,7 @@ int main(void)
             }
 
             letterGuessed = tolower(guess[0]);
-            //printf("letterGuessed: %c\n", letterGuessed);
+            // printf("letterGuessed: %c\n", letterGuessed);
 
             for (int i = 0; i < lengthOfWord; i++)
             {
@@ -121,15 +121,15 @@ int main(void)
         }
 
         printOutcome(quit, numLives, guessWords[randomIndex]);
-        
+
         if (!quit)
         {
             play = playAgain();
         }
     }
-    
+
     printf("Goodbye.\n");
-    freeWords(guessWords);
+    freeWords(guessWords, wordCount);
     return 0;
 }
 
@@ -204,9 +204,9 @@ int playAgain(void)
 }
 
 // Free memory allocated for words
-void freeWords(char *array[MAX_COUNT])
+void freeWords(char *array[MAX_COUNT], int count)
 {
-    for (int i = 0; i < MAX_COUNT; i++)
+    for (int i = 0; i < count; i++)
     {
         free(array[i]);
     }
