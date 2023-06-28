@@ -76,7 +76,7 @@ class Player():
         return blackjack_score(self.hand)
 
     def __str__(self):
-        return f'Player {self.name} has ${self.bankroll} chips.'
+        return f'Player {self.name} has ${self.bankroll:.2f} chips.'
 
 
 """
@@ -119,21 +119,21 @@ def main():
                 player.take_cards(game_deck.deal_one())
                 dealer.take_cards(game_deck.deal_one())
             dealer_seen = [dealer.hand[0], "??"]
-            show_board(player, dealer_seen, f"Stake ${stake}", player.hand)
+            show_board(player, dealer_seen, f"Stake ${stake:.2f}", player.hand)
             print("Cards are dealt.")
 
             # check for blackjack
             if player.score() == dealer.score() == 21:
                 show_board(player, dealer.hand,
-                           f"Stake ${stake}", player.hand)
+                           f"Stake ${stake:.2f}", player.hand)
                 print("You and the dealer have BLACKJACK!")
             elif dealer.score() == 21:
                 show_board(player, dealer.hand,
-                           f"Stake ${stake}", player.hand)
+                           f"Stake ${stake:.2f}", player.hand)
                 print("Dealer has BLACKJACK!")
             elif player.score() == 21:
                 show_board(player, dealer_seen,
-                           f"Stake ${stake}", player.hand)
+                           f"Stake ${stake:.2f}", player.hand)
                 print("You have BLACKJACK!")
 
             # when no blackjack
@@ -144,7 +144,7 @@ def main():
                 while extra_card:
                     player.take_cards(game_deck.deal_one())
                     show_board(player, dealer_seen,
-                               f"Stake ${stake}", player.hand)
+                               f"Stake ${stake:.2f}", player.hand)
                     if player.score() > 21:
                         print("BUST")
                         break
@@ -155,7 +155,7 @@ def main():
                 if player.score() <= 21:
                     # dealer actions
                     show_board(player, dealer.hand,
-                               f"Stake ${stake}", player.hand)
+                               f"Stake ${stake:.2f}", player.hand)
                     print(f"Dealer turns over {dealer.hand[1]}.")
                     print(f"Dealer's score is {dealer.score()}.")
                     while dealer.score() < 17:
@@ -163,27 +163,28 @@ def main():
                         input("Press enter to continue...")
                         dealer.take_cards(game_deck.deal_one())
                         show_board(player, dealer.hand,
-                                   f'Stake ${stake}', player.hand)
+                                   f'Stake ${stake:.2f}', player.hand)
                         print(f"Dealer's score is {dealer.score()}.")
                     if dealer.score() > 21:
                         print("BUST")
 
             # payout
-            if (dealer.score() < player.score() <= 21 or
-                    player.score() <= 21 < dealer.score()):
-                if len(player.hand) == 2:
-                    print(f"You win ${stake * 3/2}!")
-                    player.bankroll += stake * 3/2
-                else:
-                    print(f"You win ${stake * 2}!")
-                player.bankroll += stake * 2
-            elif dealer.score() == player.score():
-                print(f"It's a tie. Take back your stake of ${stake}.")
+            dealer_score = dealer.score()
+            player_score = player.score()
+            if dealer_score == player_score:
+                print(f"It's a tie. Take back your stake of ${stake:.2f}.")
                 player.bankroll += stake
+            elif len(player.hand) == 2 and player_score == 21:
+                print(f"You win ${stake * 3/2:.2f}!")
+                player.bankroll += stake * 5/2
+            elif (dealer_score < player_score <= 21 or
+                    player_score <= 21 < dealer_score):
+                print(f"You win ${stake:.2f}!")
+                player.bankroll += stake * 2
             else:
                 print("You lose.")
 
-            print(f"Your bankroll is ${player.bankroll}.")
+            print(f"Your bankroll is ${player.bankroll:.2f}.")
 
             # play again?
             if player.bankroll == 0:
@@ -258,7 +259,7 @@ def show_board(player, dealer_hand=[], message='', player_hand=[]):
     print('\n' + message)
     show_hand(player_hand)
     print(f"{player.name}'s hand")
-    print(f"Stack ${player.bankroll}")
+    print(f"Stack ${player.bankroll:.2f}")
     print("-" * 50)
 
 
