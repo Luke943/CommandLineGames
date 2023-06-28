@@ -119,21 +119,18 @@ def main():
                 player.take_cards(game_deck.deal_one())
                 dealer.take_cards(game_deck.deal_one())
             dealer_seen = [dealer.hand[0], "??"]
-            show_board(player, dealer_seen, f"Stake ${stake:.2f}", player.hand)
+            show_board(player, dealer_seen, stake, player.hand)
             print("Cards are dealt.")
 
             # check for blackjack
             if player.score() == dealer.score() == 21:
-                show_board(player, dealer.hand,
-                           f"Stake ${stake:.2f}", player.hand)
+                show_board(player, dealer.hand, stake, player.hand)
                 print("You and the dealer have BLACKJACK!")
             elif dealer.score() == 21:
-                show_board(player, dealer.hand,
-                           f"Stake ${stake:.2f}", player.hand)
+                show_board(player, dealer.hand, stake, player.hand)
                 print("Dealer has BLACKJACK!")
             elif player.score() == 21:
-                show_board(player, dealer_seen,
-                           f"Stake ${stake:.2f}", player.hand)
+                show_board(player, dealer_seen, stake, player.hand)
                 print("You have BLACKJACK!")
 
             # when no blackjack
@@ -143,8 +140,7 @@ def main():
                 extra_card = get_user_choice("Hit or stick?", "H", "S")
                 while extra_card:
                     player.take_cards(game_deck.deal_one())
-                    show_board(player, dealer_seen,
-                               f"Stake ${stake:.2f}", player.hand)
+                    show_board(player, dealer_seen, stake, player.hand)
                     if player.score() > 21:
                         print("BUST")
                         break
@@ -154,16 +150,14 @@ def main():
                 # if player not bust
                 if player.score() <= 21:
                     # dealer actions
-                    show_board(player, dealer.hand,
-                               f"Stake ${stake:.2f}", player.hand)
+                    show_board(player, dealer.hand, stake, player.hand)
                     print(f"Dealer turns over {dealer.hand[1]}.")
                     print(f"Dealer's score is {dealer.score()}.")
                     while dealer.score() < 17:
                         print("Dealer will take another card")
                         input("Press enter to continue...")
                         dealer.take_cards(game_deck.deal_one())
-                        show_board(player, dealer.hand,
-                                   f'Stake ${stake:.2f}', player.hand)
+                        show_board(player, dealer.hand, stake, player.hand)
                         print(f"Dealer's score is {dealer.score()}.")
                     if dealer.score() > 21:
                         print("BUST")
@@ -251,12 +245,16 @@ def show_hand(cards):
     print(bottom)
 
 
-def show_board(player, dealer_hand=[], message='', player_hand=[]):
+def show_board(player, dealer_hand=[], stake=0, player_hand=[]):
     os.system('cls' if os.name == 'nt' else 'clear')
     print("-" * 50)
     print("Dealer's hand")
     show_hand(dealer_hand)
-    print('\n' + message)
+    print('')
+    if stake:
+        print(f"Stake ${stake:.2f}")
+    else:
+        print('')
     show_hand(player_hand)
     print(f"{player.name}'s hand")
     print(f"Stack ${player.bankroll:.2f}")
