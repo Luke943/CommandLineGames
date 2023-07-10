@@ -1,7 +1,7 @@
 /*
  * Rock, Paper, Scissors
  * A game to play versus the computer
- * Requires: npm install prompt-sync
+ * To install the prompt-sync module, run: 'npm install prompt-sync'
  */
 
 // Load prompt-sync for user input

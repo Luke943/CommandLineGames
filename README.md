@@ -1,9 +1,37 @@
 ## Description
+
 A collection of short games made to run on the command line.
 
+### Contents
+- Blackjack (Python)
+- Hangman (C)
+- Rock, Paper, Scissors (JavaScript)
+- Tetris (C++)
+- TicTacToe (Python)
+
 ## Games
-- Backjack (Python) - Play Blackjack against an AI dealer.
-- Hangman (C) - Play Hangman from a list of words loaded from a text file.
-- Tetris (C++) - A Tetris clone on the command line.
-- TicTacToe (Python) - A two player game of TicTacToe.
-- Rock, Paper, Scissors (JS) - Play rock, paper, scissors against the computer.
+
+### Blackjack
+Play Blackjack against an AI dealer.
+
+![](blackjack.png)
+
+### Hangman
+Play Hangman from a list of words loaded from a text file.
+
+![](hangman.png)
+
+### Rock, Paper, Scissors (JS)
+Play rock, paper, scissors against the computer.
+
+![](rockpaperscissors.png)
+
+### Tetris (C++)
+A Tetris clone on the command line.
+
+![](tetris.png)
+
+### TicTacToe
+A two player game of TicTacToe.
+
+![](tictactoe.png)
