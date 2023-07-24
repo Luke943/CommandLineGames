@@ -9,6 +9,7 @@ A collection of short games made to run on the command line.
 - Rock, Paper, Scissors, Lizard, Spock (`C++`)
 - Tetris (`C++`)
 - TicTacToe (`Python`)
+- UFO game (`C++`)
 
 ## Games
 
@@ -41,3 +42,8 @@ A Tetris clone on the command line.
 A two player game of TicTacToe.
 
 ![](tictactoe.png)
+
+### UFO Game
+Play a hangman clone with alien abduction.
+
+![](ufo.png)
