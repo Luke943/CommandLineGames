@@ -10,27 +10,32 @@ import random
 def main():
     # run the game
     replay = True
+    mark1 = "X"
+    mark2 = "O"
+    board = ["#"] + [" "] * 9
+
+    print("_____________")
+    print("             ")
+    print(" TIC TAC TOE ")
+    print("_____________")
+    print("Welcome to Tic Tac Toe!")
+    print(
+        "Take turns placing markers on the grid using using 1-9 in a numberpad layout."
+    )
+    print("Get three in a row to win.")
 
     # start
-    while replay == True:
+    while replay:
         game_on = True
-        board = ['#'] + [' '] * 9
-        display_board(board)
-        print('Welcome to Tic Tac Toe!')
-        print('Take turns placing markers on the grid using using 1-9 in a numberpad layout.')
 
-        # picks who plays first and markers
+        # picks who plays first
         p1 = play_order()
         p2 = 3 - p1
-        mark1 = choose_symbol(p1)
-        if mark1 == 'X':
-            mark2 = 'O'
-        else:
-            mark2 = 'X'
+
+        display_board(board)
 
         # gameplay
-        while game_on == True:
-
+        while game_on:
             # first player turn
             p1move = select_move(board, p1)
             board = update_board(board, p1move, mark1)
@@ -57,40 +62,31 @@ def main():
         replay = play_again()
 
     # ending
-    print('Goodbye!')
+    print("Goodbye!")
 
 
 def display_board(board):
-    os.system('cls' if os.name=='nt' else 'clear')
-    print('   |   |   ')
-    print(' ' + board[7] + ' | ' + board[8] + ' | ' + board[9] + ' ')
-    print('---|---|---')
-    print(' ' + board[4] + ' | '+board[5] + ' | ' + board[6] + ' ')
-    print('---|---|---')
-    print(' ' + board[1] + ' | '+board[2]+' | '+board[3] + ' ')
-    print('   |   |   ')
-
-
-def choose_symbol(player):
-    choice = ''
-    while choice not in ['X', 'O']:
-        choice = input('Player {}: Play as X or O? '.format(player)).upper()
-        if choice not in ['X', 'O']:
-            print("Enter either 'X' or 'O'.")
-    return choice
+    os.system("cls" if os.name == "nt" else "clear")
+    print("   |   |   ")
+    print(" " + board[7] + " | " + board[8] + " | " + board[9] + " ")
+    print("---|---|---")
+    print(" " + board[4] + " | " + board[5] + " | " + board[6] + " ")
+    print("---|---|---")
+    print(" " + board[1] + " | " + board[2] + " | " + board[3] + " ")
+    print("   |   |   ")
 
 
 def select_move(board, player):
     square = 0
     square_is_valid = False
     while not square_is_valid:
-        square = input('Player {}, place your marker (1-9): '.format(player))
+        square = input("Player {}, place your marker (1-9): ".format(player))
         if not square.isdigit():
-            print('Input must be a digit.')
+            print("Input must be a digit.")
         elif int(square) not in range(1, 10):
-            print('Input must be a number 1 to 9.')
-        elif board[int(square)] != ' ':
-            print('That square is taken!')
+            print("Input must be a number 1 to 9.")
+        elif board[int(square)] != " ":
+            print("That square is taken!")
         else:
             square_is_valid = True
     return int(square)
@@ -102,8 +98,16 @@ def update_board(board, square, mark):
 
 
 def win_check(board, mark):
-    winning_lines = [[1, 2, 3], [4, 5, 6], [7, 8, 9], [1, 4, 7],
-                     [2, 5, 8], [3, 6, 9], [1, 5, 9], [3, 5, 7]]
+    winning_lines = [
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9],
+        [1, 4, 7],
+        [2, 5, 8],
+        [3, 6, 9],
+        [1, 5, 9],
+        [3, 5, 7],
+    ]
     for a, b, c in winning_lines:
         if board[a] == board[b] == board[c] == mark:
             return True
@@ -112,35 +116,36 @@ def win_check(board, mark):
 
 
 def space_check(board):
-    return ' ' in board
+    return " " in board
 
 
 def play_again():
-    answer = ''
-    while answer not in ['Y', 'N']:
-        answer = input('Play again? (Y/N): ').upper()
-        if answer not in ['Y', 'N']:
+    answer = ""
+    while answer not in ["Y", "N"]:
+        answer = input("Play again? (Y/N): ").upper()
+        if answer not in ["Y", "N"]:
             print("Type 'Y' or 'N'.")
-    if answer == 'Y':
+    if answer == "Y":
         return True
     else:
         return False
 
 
 def play_order():
-    choice = ''
-    while choice not in ['1', '2', '3']:
+    choice = ""
+    while choice not in ["1", "2", "3"]:
         choice = input(
-            'Choose who will play first:\n(1) Player 1\n(2) Player 2\n(3) Random choice\n')
-        if choice not in ['1', '2', '3']:
+            "Choose who will play first:\n(1) Player 1\n(2) Player 2\n(3) Random choice\n"
+        )
+        if choice not in ["1", "2", "3"]:
             print("Enter either 1, 2 or 3.")
-    if choice == '3':
+    if choice == "3":
         player = random.randint(1, 2)
     else:
         player = int(choice)
-    print('Player {} will move first!'.format(player))
+    print("Player {} will move first!".format(player))
     return player
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
