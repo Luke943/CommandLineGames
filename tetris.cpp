@@ -1,14 +1,14 @@
-/* 
+/*
  * Command line Tetris game.
- * 
+ *
  * Controls:
  *  Left arrow - move piece left
  *  Right arrow - move piece right
  *  Down arrow - move piece down faster
  *  Space - rotate piece
- * 
+ *
  * Requires resizing console window to width 80 and height at least 18.
- * 
+ *
  * Based on OneLoneCoder guide.
  * Youtube: https://www.youtube.com/watch?v=8OK8_tHeCIA&ab_channel=javidx9
  * Github source: https://github.com/OneLoneCoder/videos/blob/master/OneLoneCoder_Tetris.cpp
@@ -18,7 +18,8 @@
 #include <thread>
 #include <vector>
 
-using namespace std;
+// using namespace std; // needed replacing as std::byte caused conflicts
+using namespace std::chrono_literals;
 
 #ifndef UNICODE
 #define UNICODE
@@ -29,7 +30,7 @@ using namespace std;
 
 #include <Windows.h>
 
-wstring tetromino[7];
+std::wstring tetromino[7];
 int nFieldWidth = 12;
 int nFieldHeight = 18;
 unsigned char *pField = nullptr;
@@ -42,7 +43,7 @@ bool DoesPieceFit(int nTetromino, int nRotation, int posX, int posY);
 int main(void)
 {
     srand(time(NULL));
-    
+
     // Create assets
     tetromino[0] = L"..X...X...X...X."; // Hero
     tetromino[1] = L"..X..XX..X......"; // Cleveland Z
@@ -85,13 +86,13 @@ int main(void)
     bool bForceDown = false;
     int nPiece = 0;
     int nScore = 0;
-    vector<int> vLines;
+    std::vector<int> vLines;
 
     // Game loop
     while (!bGameOver)
     {
         // Game timing
-        this_thread::sleep_for(50ms);
+        std::this_thread::sleep_for(50ms);
         nSpeedCounter++;
         bForceDown = (nSpeedCounter == nSpeed);
 
@@ -102,7 +103,7 @@ int main(void)
 
         // Game logic
         if (bKey[0] && DoesPieceFit(nCurrentPiece, nCurrentRotation, nCurrentX + 1, nCurrentY))
-            nCurrentX++;      
+            nCurrentX++;
         if (bKey[1] && DoesPieceFit(nCurrentPiece, nCurrentRotation, nCurrentX - 1, nCurrentY))
             nCurrentX--;
         if (bKey[2] && DoesPieceFit(nCurrentPiece, nCurrentRotation, nCurrentX, nCurrentY + 1))
@@ -120,16 +121,16 @@ int main(void)
             if (DoesPieceFit(nCurrentPiece, nCurrentRotation, nCurrentX, nCurrentY + 1))
                 // Can move down
                 nCurrentY++;
-            else    
+            else
             {
                 // Lock piece in
                 for (int px = 0; px < 4; px++)
                     for (int py = 0; py < 4; py++)
                         if (tetromino[nCurrentPiece][Rotate(px, py, nCurrentRotation)] == L'X')
                             pField[(nCurrentY + py) * nFieldWidth + (nCurrentX + px)] = nCurrentPiece + 1;
-                
+
                 nPiece++;
-                if (nPiece % 10 == 0 && nSpeed >= 10)
+                if (nPiece % 10 == 0 && nSpeed >= 5)
                     nSpeed--;
 
                 // Check for lines
@@ -189,14 +190,14 @@ int main(void)
         if (!vLines.empty())
         {
             WriteConsoleOutputCharacter(hConsole, screen, nScreenWidth * nScreenHeight, {0, 0}, &dwBytesWritten);
-            this_thread::sleep_for(400ms);  // Delay to show completed lines for a bit
+            std::this_thread::sleep_for(400ms); // Delay to show completed lines for a bit
 
-            for (auto &v: vLines)
+            for (auto &v : vLines)
                 for (int x = 1; x < nFieldWidth - 1; x++)
                 {
                     for (int y = v; y > 0; y--)
-                        pField[y * nFieldWidth + x] = pField[(y - 1) * nFieldWidth + x];    // Move down rows above
-                    pField[x] = 0;  // Top row clear
+                        pField[y * nFieldWidth + x] = pField[(y - 1) * nFieldWidth + x]; // Move down rows above
+                    pField[x] = 0;                                                       // Top row clear
                 }
             vLines.clear();
         }
@@ -206,7 +207,7 @@ int main(void)
     }
 
     CloseHandle(hConsole);
-    cout << "Game Over! Your score is: " << nScore << endl;
+    std::cout << "Game Over! Your score is: " << nScore << std::endl;
     system("pause");
     return 0;
 }
@@ -237,7 +238,7 @@ bool DoesPieceFit(int nTetromino, int nRotation, int nPosX, int nPosY)
         {
             int nPieceIndex = Rotate(px, py, nRotation);
             int nFieldIndex = (nPosY + py) * nFieldWidth + (nPosX + px);
-            
+
             if (nPosX + px >= 0 && nPosX + px < nFieldWidth)
                 if (nPosY + py >= 0 && nPosY + py < nFieldHeight)
                     if (tetromino[nTetromino][nPieceIndex] == L'X' && pField[nFieldIndex] != 0)
