@@ -5,6 +5,7 @@ A collection of short games made to run on the command line.
 ### Contents
 - Blackjack (`Python`)
 - Hangman (`C`)
+- Jim's Fishing Adventure (`C++`)
 - Rock, Paper, Scissors (`JavaScript`)
 - Rock, Paper, Scissors, Lizard, Spock (`C++`)
 - Tetris (`C++`)
@@ -23,6 +24,11 @@ Play Hangman from a list of words loaded from a text file.
 
 ![](hangman.png)
 
+### Jim's Fishing Adventure
+A badly-written interactive short story about Jim's fishing trip.
+
+![](jim.png)
+
 ### Rock, Paper, Scissors
 Play rock, paper, scissors against the computer.
 
@@ -31,7 +37,7 @@ Play rock, paper, scissors against the computer.
 ### Rock, Paper, Scissors, Lizard, Spock
 Play the more advanced version: rock, paper, scissors, lizard, Spock.
 
-![](RockPaperScissorsLizardSpock.png)
+![](spock.png)
 
 ### Tetris
 A Tetris clone on the command line.
