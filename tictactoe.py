@@ -1,19 +1,21 @@
 """
-Two player game of TicTacToe.
+One or two player game of Tic-Tac-Toe.
+There are three levels of difficulty available for single player.
 Squares on the grid are numbered in the same way as the numberpad on keyboard.
 """
 
 import os
 import random
+import time
+
+import tictactoe_ai
+
+
+marks = ("X", "O")
+ai_names = ("Easy AI", "Standard AI", "Impossible AI")
 
 
 def main():
-    # run the game
-    replay = True
-    mark1 = "X"
-    mark2 = "O"
-    board = ["#"] + [" "] * 9
-
     print("_____________")
     print("             ")
     print(" TIC TAC TOE ")
@@ -24,80 +26,123 @@ def main():
     )
     print("Get three in a row to win.")
 
-    # start
-    while replay:
-        game_on = True
+    # Start a game
+    play = True
+    while play:
+        # Pick one or two player and who plays first
+        player_names = setup_players()
+        if play_order(player_names):
+            player_names.reverse()
 
-        # picks who plays first
-        p1 = play_order()
-        p2 = 3 - p1
-
+        board = ["#"] + [" "] * 9
         display_board(board)
+        active_idx = 0
 
-        # gameplay
-        while game_on:
-            # first player turn
-            p1move = select_move(board, p1)
-            board = update_board(board, p1move, mark1)
+        # Gameplay loop
+        for _ in range(9):
+            if player_names[active_idx].startswith("Player"):
+                # human player
+                move = select_move(board, player_names[active_idx])
+            else:
+                # computer player
+                move = tictactoe_ai.ai_select_move(
+                    board, active_idx, player_names[active_idx]
+                )
+                print(f"{player_names[active_idx]} chooses square {move}.")
+                time.sleep(2)
+            board = update_board(board, move, marks[active_idx])
             display_board(board)
-            if win_check(board, mark1):
-                print("Player {} wins!".format(p1))
-                game_on = False
+            if win_check(board, marks[active_idx]):
+                print(f"{player_names[active_idx]} wins!")
                 break
-            if not space_check(board):
-                print("It's a draw!")
-                game_on = False
-                break
+            active_idx = 1 - active_idx
+        else:
+            print("It's a draw!")
 
-            # second player turn
-            p2move = select_move(board, p2)
-            board = update_board(board, p2move, mark2)
-            display_board(board)
-            if win_check(board, mark2):
-                print("Player {} wins!".format(p2))
-                game_on = False
-                break
+        # Check to play again
+        play = play_again()
 
-        # check to play again
-        replay = play_again()
-
-    # ending
+    # Ending
     print("Goodbye!")
 
 
-def display_board(board):
+def setup_players() -> list[str]:
+    player_count = ""
+    print("Choose number of players:\n(1) Single player\n(2) Two player")
+    while True:
+        player_count = input()
+        if player_count in ["1", "2"]:
+            break
+        print("Enter either 1 or 2. ")
+    if player_count == "2":
+        return ["Player 1", "Player 2"]
+
+    ai_level = ""
+    print("Select difficulty level:\n(1) Easy\n(2) Standard\n(3) Impossible")
+    while True:
+        ai_level = input()
+        if ai_level in ["1", "2", "3"]:
+            break
+        print("Enter either 1, 2 or 3. ")
+    return ["Player", ai_names[int(ai_level) - 1]]
+
+
+def play_order(player_names: list[str]) -> int:
+    first_player = ""
+    print(
+        f"Choose who will play first:\n(1) {player_names[0]}\n(2) {player_names[1]}\n(3) Random choice"
+    )
+    while True:
+        first_player = input()
+        if first_player in ["1", "2", "3"]:
+            break
+        print("Enter either 1, 2 or 3. ")
+    if first_player == "3":
+        idx = random.randint(0, 1)
+    else:
+        idx = int(first_player) - 1
+    print(f"{player_names[idx]} will move first!")
+    return idx
+
+
+def display_board(board: list[int]):
     os.system("cls" if os.name == "nt" else "clear")
-    print("   |   |   ")
-    print(" " + board[7] + " | " + board[8] + " | " + board[9] + " ")
-    print("---|---|---")
-    print(" " + board[4] + " | " + board[5] + " | " + board[6] + " ")
-    print("---|---|---")
-    print(" " + board[1] + " | " + board[2] + " | " + board[3] + " ")
-    print("   |   |   ")
+    print("     |     |     ")
+    print("  " + board[7] + "  |  " + board[8] + "  |  " + board[9] + "  ")
+    print("     |     |     ")
+    print("-----+-----+-----")
+    print("     |     |     ")
+    print("  " + board[4] + "  |  " + board[5] + "  |  " + board[6] + "  ")
+    print("     |     |     ")
+    print("-----+-----+-----")
+    print("     |     |     ")
+    print("  " + board[1] + "  |  " + board[2] + "  |  " + board[3] + "  ")
+    print("     |     |     ")
 
 
-def select_move(board, player):
+def select_move(board: list[int], player_name: str) -> int:
     square = 0
     square_is_valid = False
+    print(f"{player_name}, place your marker (1-9): ")
     while not square_is_valid:
-        square = input("Player {}, place your marker (1-9): ".format(player))
+        square = input()
         if not square.isdigit():
-            print("Input must be a digit.")
+            print("Input must be a digit. ")
         elif int(square) not in range(1, 10):
-            print("Input must be a number 1 to 9.")
+            print("Input must be a number 1 to 9. ")
         elif board[int(square)] != " ":
-            print("That square is taken!")
+            print("That square is taken! ")
         else:
             square_is_valid = True
     return int(square)
 
 
-def update_board(board, square, mark):
+def update_board(board: list[int], square: int, mark: str) -> list[int]:
     board[square] = mark
     return board
 
 
-def win_check(board, mark):
+def win_check(board: list[int], mark: str) -> bool:
     winning_lines = [
         [1, 2, 3],
         [4, 5, 6],
@@ -111,40 +156,17 @@ def win_check(board, mark):
     for a, b, c in winning_lines:
         if board[a] == board[b] == board[c] == mark:
             return True
-    else:
-        return False
+    return False
 
 
-def space_check(board):
-    return " " in board
-
-
-def play_again():
+def play_again() -> bool:
     answer = ""
-    while answer not in ["Y", "N"]:
+    while True:
         answer = input("Play again? (Y/N): ").upper()
-        if answer not in ["Y", "N"]:
-            print("Type 'Y' or 'N'.")
-    if answer == "Y":
-        return True
-    else:
-        return False
-
-
-def play_order():
-    choice = ""
-    while choice not in ["1", "2", "3"]:
-        choice = input(
-            "Choose who will play first:\n(1) Player 1\n(2) Player 2\n(3) Random choice\n"
-        )
-        if choice not in ["1", "2", "3"]:
-            print("Enter either 1, 2 or 3.")
-    if choice == "3":
-        player = random.randint(1, 2)
-    else:
-        player = int(choice)
-    print("Player {} will move first!".format(player))
-    return player
+        if answer in ["Y", "N"]:
+            break
+        print("Type 'Y' or 'N'.")
+    return answer == "Y"
 
 
 if __name__ == "__main__":
