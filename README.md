@@ -23,13 +23,8 @@ Play Hangman from a list of words loaded from a text file.
 
 ![](hangman.png)
 
-### Rock, Paper, Scissors
-Play rock, paper, scissors against the computer.
-
-![](rockpaperscissors.png)
-
 ### Rock, Paper, Scissors, Lizard, Spock
-Play the more advanced version: rock, paper, scissors, lizard, Spock.
+Play a variation of the classic rock, paper, scissors with extra options.
 
 ![](spock.png)
 
