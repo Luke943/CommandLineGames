@@ -1,17 +1,16 @@
-all:
-	gcc -o hangman hangman.c
-	g++ -o spock spock.cpp
-	g++ -o tetris tetris.cpp
+all: hangman.exe spock.exe tetris.exe ufo.exe
+
+hangman.exe: hangman.c
+	gcc -o hangman.exe hangman.c
+
+spock.exe: spock.cpp
+	g++ -o spock.exe spock.cpp
+
+tetris.exe: tetris.cpp
+	g++ -o tetris.exe tetris.cpp
+
+ufo.exe: ufo.cpp ufo_functions.cpp
 	g++ -o ufo ufo.cpp ufo_functions.cpp
 
-hangman:
-	gcc -o hangman hangman.c
-
-spock: 
-	g++ -o spock spock.cpp
-
-tetris:
-	g++ -o tetris tetris.cpp
-
-ufo:
-	g++ -o ufo ufo.cpp ufo_functions.cpp
+clean:
+	rm *.exe
